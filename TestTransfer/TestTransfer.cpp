@@ -65,8 +65,10 @@ bool ConvertFile(char *szSrcFile, char *szDestFile)
 int _tmain(int argc, _TCHAR* argv[])
 {
 	ConvertFile("C:\\Users\\loverains\\Documents\\GitHub\\GameProject\\project\\Common\\PacketDef\\ClientPacket.h","C:\\Users\\loverains\\Documents\\GitHub\\GameProject\\project\\Client\\TestCSharp\\TestCSharp\\ClientPacket.cs");
+	ConvertFile("C:\\Users\\loverains\\Documents\\GitHub\\GameProject\\project\\Common\\PacketDef\\ClientPacket.h","C:\\Users\\loverains\\Documents\\GitHub\\U3dClient\\Assets\\Core\\ClientPacket.cs");
 
 	ConvertFile("C:\\Users\\loverains\\Documents\\GitHub\\GameProject\\project\\Common\\PacketDef\\PacketHeader.h","C:\\Users\\loverains\\Documents\\GitHub\\GameProject\\project\\Client\\TestCSharp\\TestCSharp\\PacketHeader.cs");
+	ConvertFile("C:\\Users\\loverains\\Documents\\GitHub\\GameProject\\project\\Common\\PacketDef\\PacketHeader.h","C:\\Users\\loverains\\Documents\\GitHub\\U3dClient\\Assets\\Core\\PacketHeader.cs");
 	
 		
 	return 0;
