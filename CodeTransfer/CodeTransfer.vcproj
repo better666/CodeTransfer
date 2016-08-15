@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="TestTransfer"
+	Name="CodeTransfer"
 	ProjectGUID="{43810C4E-8632-4E72-8143-9406BBA95F7B}"
-	RootNamespace="TestTransfer"
+	RootNamespace="CodeTransfer"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -191,7 +191,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\TestTransfer.cpp"
+				RelativePath=".\CodeTransfer.cpp"
 				>
 			</File>
 		</Filter>
