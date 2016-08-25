@@ -1,6 +1,6 @@
-// stdafx.h : ±ê×¼ÏµÍ³°üº¬ÎÄ¼şµÄ°üº¬ÎÄ¼ş£¬
-// »òÊÇ¾­³£Ê¹ÓÃµ«²»³£¸ü¸ÄµÄ
-// ÌØ¶¨ÓÚÏîÄ¿µÄ°üº¬ÎÄ¼ş
+// stdafx.h : æ ‡å‡†ç³»ç»ŸåŒ…å«æ–‡ä»¶çš„åŒ…å«æ–‡ä»¶ï¼Œ
+// æˆ–æ˜¯ç»å¸¸ä½¿ç”¨ä½†ä¸å¸¸æ›´æ”¹çš„
+// ç‰¹å®šäºé¡¹ç›®çš„åŒ…å«æ–‡ä»¶
 //
 
 #pragma once
@@ -9,7 +9,30 @@
 
 #include <stdio.h>
 #include <tchar.h>
+#include <string>
+#include <vector>
+#include <map>
+#include <stdio.h>
+#include <direct.h>
+
+typedef char			INT8;
+typedef unsigned char	UINT8;
+typedef short			INT16;
+typedef unsigned short  UINT16;
+typedef int				INT32;
+typedef unsigned int	UINT32;
+typedef int				BOOL;
+typedef void			VOID;
+typedef float			FLOAT;
+typedef double			DOUBLE;
+typedef long long       INT64;
+typedef unsigned long long UINT64;
+typedef char			BYTE;
+typedef char			CHAR;
+
+#define FALSE 0
+#define TRUE 1
+
+// TODO: åœ¨æ­¤å¤„å¼•ç”¨ç¨‹åºéœ€è¦çš„å…¶ä»–å¤´æ–‡ä»¶
 
 
-
-// TODO: ÔÚ´Ë´¦ÒıÓÃ³ÌĞòĞèÒªµÄÆäËûÍ·ÎÄ¼ş

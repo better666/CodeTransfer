@@ -6,7 +6,7 @@
 
 std::string GetCsType(std::string tType)
 {
-	if (tType == "INT8") return "Byte";
+	if (tType == "INT8") return "SByte";
 	if (tType == "INT16") return "Int16";
 	if (tType == "INT32") return "Int32";
 	if (tType == "INT64") return "Int64";
@@ -20,7 +20,7 @@ std::string GetCsType(std::string tType)
 	return tType;
 }
 
-bool ConvertFileToCsharp(char *szSrcFile, char *szDestFile)
+bool ConvertFileToCsharp(const char *szSrcFile, const char *szDestFile)
 {
 	std::vector<std::string> m_WorldList;
 
@@ -89,9 +89,16 @@ bool ProcessFieldDeclare(PacketField &fd, FILE *pOutFile)
             fputs(GetCsType(fd.fieldType).c_str(), pOutFile);
             fputs(fd.fieldName.substr(fd.fieldName.find("[")).c_str(), pOutFile);
         }
+		
 	}
 
-	fputs(";\n", pOutFile);
+	fputs(";", pOutFile);
+	if (fd.fieldCmt.size() >0 ){
+		fputs(strTab.c_str(), pOutFile);
+		fputs(strTab.c_str(), pOutFile);
+		fputs(fd.fieldCmt.c_str(), pOutFile);
+	}
+	fputs("\n", pOutFile);
 	return true;
 }
 
@@ -260,6 +267,10 @@ bool ProcessWriteMethod(std::vector<PacketField> &fdlist, FILE *pOutFile)
 
 bool ProcessPacket(PacketDef &Packet, FILE *pOutFile)
 {
+	fputs(Packet.PacketCmt.c_str(), pOutFile);
+	if (Packet.PacketCmt.size() > 0) {
+		fputs("\n", pOutFile);
+	}
 	fputs("public class ", pOutFile);
 	fputs(Packet.PacketName.c_str(), pOutFile);
 	fputs("\n", pOutFile);

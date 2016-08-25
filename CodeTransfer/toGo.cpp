@@ -4,22 +4,23 @@
 #include <map>
 #include "transfer.h"
 
+
 std::string GetGoType(std::string tType)
 {
 	if (tType == "INT8") return "int8";
 	if (tType == "INT16") return "int16";
-	if (tType == "INT32") return "int";
+	if (tType == "INT32") return "int32";
 	if (tType == "INT64") return "int64";
 	if (tType == "UINT8") return "uint8";
 	if (tType == "UINT16") return "uint16";
-	if (tType == "UINT32") return "uint";
+	if (tType == "UINT32") return "uint32";
 	if (tType == "UINT64") return "uint64";
 	if (tType == "FLOAT") return "float32";
 	if (tType == "STRING") return "string";
 	return tType;
 }
 
-bool ConvertFileToGo(char *szSrcFile, char *szDestFile)
+bool ConvertFileToGo(const char *szSrcFile, const char *szDestFile)
 {
 	std::vector<std::string> m_WorldList;
 
@@ -53,15 +54,14 @@ bool ConvertFileToGo(char *szSrcFile, char *szDestFile)
 bool ProcessFieldDeclareGo(PacketField &fd, FILE *pOutFile)
 {	
 	fputs(strTab.c_str(), pOutFile);
-	//·ÇÊý×éµÄ±äÁ¿µÄ´¦Àí¡£
+	//éžæ•°ç»„çš„å˜é‡çš„å¤„ç†ã€‚
 	if(fd.fieldName.find("[") == std::string::npos)
 	{
 		fputs(fd.fieldName.c_str(), pOutFile);
 		fputs(" ", pOutFile);
 		fputs(GetGoType(fd.fieldType).c_str(), pOutFile);
- 
 	}
-	else //ÓÐÊý×éµÄ±äÁ¿µÄ´¦Àí¡£
+	else //æœ‰æ•°ç»„çš„å˜é‡çš„å¤„ç†ã€‚
 	{
 		std::string Num = fd.fieldName.substr(fd.fieldName.find("["));
 		std::string SimpleName = fd.fieldName.substr(0,fd.fieldName.find("["));
@@ -77,6 +77,12 @@ bool ProcessFieldDeclareGo(PacketField &fd, FILE *pOutFile)
 
 		fputs(" ", pOutFile);
 		fputs(GetGoType(fd.fieldType).c_str(), pOutFile);
+	}
+
+	if (fd.fieldCmt.size() >0 ){
+		fputs(strTab.c_str(), pOutFile);
+		fputs(strTab.c_str(), pOutFile);
+		fputs(fd.fieldCmt.c_str(), pOutFile);
 	}
 
 	fputs("\n", pOutFile);
@@ -226,6 +232,10 @@ bool ProcessWriteMethodGo(std::string packname, std::vector<PacketField> &fdlist
 
 bool ProcessPacketGo(PacketDef &Packet, FILE *pOutFile)
 {
+	fputs(Packet.PacketCmt.c_str(), pOutFile);
+	if (Packet.PacketCmt.size() > 0) {
+		fputs("\n", pOutFile);
+	}
 	fputs("type ", pOutFile);
 	fputs(Packet.PacketName.c_str(), pOutFile);
 	fputs(" struct {\n", pOutFile);
