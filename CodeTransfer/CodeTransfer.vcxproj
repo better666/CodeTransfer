@@ -94,8 +94,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="CodeTransfer.cpp" />
+    <ClCompile Include="toCpp.cpp" />
     <ClCompile Include="toCsharp.cpp" />
     <ClCompile Include="toGo.cpp" />
+    <ClCompile Include="toLua.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IniFile.h" />

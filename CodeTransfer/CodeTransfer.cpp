@@ -14,8 +14,10 @@ std::string strBlank = " ";
 int _tmain(int argc, _TCHAR* argv[])
 {
     InitTypeFuncMap();
-	ConvertFileToCsharp("D:\\Heros\\server\\src\\battlesvr\\mainlogic\\battle_msg.h","D:\\Heros\\client\\Assets\\AOH\\Script\\net\\battle_msg.cs");
-	ConvertFileToGo("D:\\Heros\\server\\src\\battlesvr\\mainlogic\\battle_msg.h","D:\\Heros\\server\\src\\msg\\battle_msg.go");
+	//ConvertFileToCsharp("D:\\Heros\\server\\src\\battlesvr\\mainlogic\\battle_msg.h","D:\\Heros\\server\\src\\msg\\battle_msg.cs");
+	//ConvertFileToGo("D:\\Heros\\server\\src\\battlesvr\\mainlogic\\battle_msg.h","D:\\Heros\\server\\src\\msg\\battle_msg.go");
+	//ConvertFileToLua("D:\\Heros\\server\\src\\battlesvr\\mainlogic\\battle_msg.h","C:\\Users\\Administrator\\Desktop\\testlua\\battle_msg.lua");
+	ConvertFileToCpp("D:\\Heros\\server\\src\\battlesvr\\mainlogic\\battle_msg.h","D:\\Heros\\server\\src\\msg\\battle_msg.cpp");
 		/*
 	////以下转换走的配制
 	FILE *pFile = fopen(GetConfigName().c_str(),"r+");

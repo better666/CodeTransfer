@@ -38,11 +38,15 @@ enum FieldState
 
 bool GetWorldList(const char *szFile, std::vector<std::string> &WordList);
 bool GetPacketList(std::vector<std::string> &WorldList, std::vector<PacketDef> &PacketList);
-bool ProcessPacket(PacketDef &Packet, FILE *pOutFile);
+bool ProcessPacketCs(PacketDef &Packet, FILE *pOutFile);
 bool ProcessPacketGo(PacketDef &Packet, FILE *pOutFile);
+bool ProcessPacketCpp(PacketDef &Packet, FILE *pOutFile);
+bool ProcessPacketLua(PacketDef &Packet, FILE *pOutFile);
 
 bool ConvertFileToCsharp(const char *szSrcFile, const char *szDestFile);
 bool ConvertFileToGo(const char *szSrcFile, const char *szDestFile);
+bool ConvertFileToCpp(const char *szSrcFile, const char *szDestFile);
+bool ConvertFileToLua(const char *szSrcFile, const char *szDestFile);
 
 bool InitTypeFuncMap();
 std::string GetConfigName();

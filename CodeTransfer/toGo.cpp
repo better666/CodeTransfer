@@ -96,7 +96,7 @@ bool ProcessReadMethodGo(std::string packname, std::vector<PacketField> &fdlist,
     fputs(") Read(reader *PacketReader) bool {\n",pOutFile);
 	for(size_t m = 0; m < fdlist.size(); m++)
 	{
-         fputs(strTab.c_str(), pOutFile);
+        fputs(strTab.c_str(), pOutFile);
 		PacketField fd = fdlist.at(m);
 		if(fd.fieldName.find("[") == std::string::npos)
 		{
@@ -143,7 +143,7 @@ bool ProcessReadMethodGo(std::string packname, std::vector<PacketField> &fdlist,
                 fputs(fileName.c_str(), pOutFile);
                 fputs("[i] = reader.Read", pOutFile);
                 fputs(G_TypeFuncMap[fd.fieldType] .c_str(), pOutFile);
-               fputs("()\n", pOutFile);
+                fputs("()\n", pOutFile);
             }
             else
             {
@@ -151,7 +151,7 @@ bool ProcessReadMethodGo(std::string packname, std::vector<PacketField> &fdlist,
                 fputs(fileName.c_str(), pOutFile);
                 fputs("[i].Read(reader)\n", pOutFile);
             }     
-			 fputs(strTab.c_str(), pOutFile);
+			fputs(strTab.c_str(), pOutFile);
 			fputs("}\n", pOutFile);
 		}
 	}
@@ -175,8 +175,8 @@ bool ProcessWriteMethodGo(std::string packname, std::vector<PacketField> &fdlist
 		{
             if (GetGoType(fd.fieldType) != fd.fieldType) 
             {
-                 fputs("writer.Write", pOutFile);
-                 fputs(G_TypeFuncMap[fd.fieldType].c_str(), pOutFile);
+                fputs("writer.Write", pOutFile);
+                fputs(G_TypeFuncMap[fd.fieldType].c_str(), pOutFile);
                 fputs("(self.", pOutFile);
                 fputs(fd.fieldName.c_str(), pOutFile);
                 fputs(")\n", pOutFile);
@@ -195,8 +195,8 @@ bool ProcessWriteMethodGo(std::string packname, std::vector<PacketField> &fdlist
 			Num.erase(Num.size()-1, 1);
             if (Num == "1")
             {
-                    std::string countName = "self." + fileName+"_Cnt";
-                    Num = countName;
+                std::string countName = "self." + fileName+"_Cnt";
+                Num = countName;
             }
 
 			fputs("for i := 0; i < int(", pOutFile);fputs(Num.c_str(), pOutFile);fputs("); i++ {\n", pOutFile);
@@ -205,8 +205,8 @@ bool ProcessWriteMethodGo(std::string packname, std::vector<PacketField> &fdlist
             //////
           if (GetGoType(fd.fieldType) != fd.fieldType) 
             {
-                 fputs("writer.Write", pOutFile);
-                 fputs(G_TypeFuncMap[fd.fieldType].c_str(), pOutFile);
+                fputs("writer.Write", pOutFile);
+                fputs(G_TypeFuncMap[fd.fieldType].c_str(), pOutFile);
                 fputs("(self.", pOutFile);
                 fputs(fileName.c_str(), pOutFile);
                 fputs("[i]);\n", pOutFile);
@@ -232,8 +232,8 @@ bool ProcessWriteMethodGo(std::string packname, std::vector<PacketField> &fdlist
 
 bool ProcessPacketGo(PacketDef &Packet, FILE *pOutFile)
 {
-	fputs(Packet.PacketCmt.c_str(), pOutFile);
 	if (Packet.PacketCmt.size() > 0) {
+		fputs(Packet.PacketCmt.c_str(), pOutFile);
 		fputs("\n", pOutFile);
 	}
 	fputs("type ", pOutFile);
@@ -245,7 +245,7 @@ bool ProcessPacketGo(PacketDef &Packet, FILE *pOutFile)
 	}	
     fputs("}\n\n", pOutFile);
 
-   ProcessReadMethodGo(Packet.PacketName, Packet.fieldList, pOutFile);
+	ProcessReadMethodGo(Packet.PacketName, Packet.fieldList, pOutFile);
 	ProcessWriteMethodGo(Packet.PacketName, Packet.fieldList, pOutFile);
 
 	return true;

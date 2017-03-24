@@ -11,9 +11,9 @@ std::string GetCsType(std::string tType)
 	if (tType == "INT32") return "Int32";
 	if (tType == "INT64") return "Int64";
 	if (tType == "UINT8") return "Byte";
-	if (tType == "UINT16") return "Uint16";
-	if (tType == "UINT32") return "Uint32";
-	if (tType == "UINT64") return "Uint64";
+	if (tType == "UINT16") return "UInt16";
+	if (tType == "UINT32") return "UInt32";
+	if (tType == "UINT64") return "UInt64";
 	if (tType == "FLOAT") return "Single";
 	if (tType == "STRING") return "string";
 
@@ -33,7 +33,7 @@ bool ConvertFileToCsharp(const char *szSrcFile, const char *szDestFile)
 	FILE *pOutFile = fopen(szDestFile,"w+");
 	if(pOutFile == NULL)
 	{
-         printf("create %s file failure!!!", szDestFile);
+        printf("create %s file failure!!!", szDestFile);
         getchar();
 		return false;
 	}
@@ -42,7 +42,7 @@ bool ConvertFileToCsharp(const char *szSrcFile, const char *szDestFile)
 	for(size_t j = 0; j < m_PakcetList.size(); j++)
 	{
 		PacketDef pf = m_PakcetList.at(j);
-		ProcessPacket(pf, pOutFile);
+		ProcessPacketCs(pf, pOutFile);
 	}
 
 	fclose(pOutFile);
@@ -50,13 +50,13 @@ bool ConvertFileToCsharp(const char *szSrcFile, const char *szDestFile)
 	return false;
 }
 
-bool ProcessFieldDeclare(PacketField &fd, FILE *pOutFile)
+bool ProcessFieldDeclareCs(PacketField &fd, FILE *pOutFile)
 {	
     fputs(strTab.c_str(), pOutFile);
 	fputs("public ", pOutFile);
 	if(fd.fieldName.find("[") == std::string::npos)
 	{
-		 if (GetCsType(fd.fieldType) != fd.fieldType) 
+		if (GetCsType(fd.fieldType) != fd.fieldType) 
 		{
 			fputs(GetCsType(fd.fieldType).c_str(), pOutFile);
 			fputs(" ", pOutFile);
@@ -102,7 +102,7 @@ bool ProcessFieldDeclare(PacketField &fd, FILE *pOutFile)
 	return true;
 }
 
-bool ProcessReadMethod(std::vector<PacketField> &fdlist, FILE *pOutFile)
+bool ProcessReadMethodCs(std::vector<PacketField> &fdlist, FILE *pOutFile)
 {
 	fputs(strTab.c_str(), pOutFile);
 	fputs("public void Read(PacketReader reader)\n",pOutFile);
@@ -139,19 +139,19 @@ bool ProcessReadMethod(std::vector<PacketField> &fdlist, FILE *pOutFile)
             if (Num == "1")
             {
                 std::string countName = fileName+"_Cnt";
-                 Num = countName;
-                  fputs(fileName.c_str(), pOutFile);
-                  fputs(" = new ", pOutFile);
-                  fputs(GetCsType(fd.fieldType).c_str(), pOutFile);
-                  fputs("[", pOutFile);
-                  fputs(countName.c_str(), pOutFile);
-                  fputs("];\n", pOutFile);
-                  fputs(strTab.c_str(), pOutFile);
-                  fputs(strTab.c_str(), pOutFile);
+                Num = countName;
+                fputs(fileName.c_str(), pOutFile);
+                fputs(" = new ", pOutFile);
+                fputs(GetCsType(fd.fieldType).c_str(), pOutFile);
+                fputs("[", pOutFile);
+                fputs(countName.c_str(), pOutFile);
+                fputs("];\n", pOutFile);
+                fputs(strTab.c_str(), pOutFile);
+                fputs(strTab.c_str(), pOutFile);
             }
 			fputs("for(int i = 0; i < ", pOutFile);fputs(Num.c_str(), pOutFile);fputs("; i++)\n", pOutFile);
             fputs(strTab.c_str(), pOutFile);
-             fputs(strTab.c_str(), pOutFile);
+            fputs(strTab.c_str(), pOutFile);
 			fputs("{\n", pOutFile);
 			fputs(strTab.c_str(), pOutFile);
             fputs(strTab.c_str(), pOutFile);
@@ -163,8 +163,8 @@ bool ProcessReadMethod(std::vector<PacketField> &fdlist, FILE *pOutFile)
             {
                 fputs(fileName.c_str(), pOutFile);
                 fputs("[i] = reader.Read", pOutFile);
-                 fputs(it->second.c_str(), pOutFile);
-                  fputs("();\n", pOutFile);
+                fputs(it->second.c_str(), pOutFile);
+                fputs("();\n", pOutFile);
             }
 			else
 			{
@@ -191,24 +191,24 @@ bool ProcessReadMethod(std::vector<PacketField> &fdlist, FILE *pOutFile)
 	return true;
 }
 
-bool ProcessWriteMethod(std::vector<PacketField> &fdlist, FILE *pOutFile)
+bool ProcessWriteMethodCs(std::vector<PacketField> &fdlist, FILE *pOutFile)
 {
-     fputs(strTab.c_str(), pOutFile);
+    fputs(strTab.c_str(), pOutFile);
 	fputs("public void Write(PacketWriter writer)\n",pOutFile);
     fputs(strTab.c_str(), pOutFile);
 	fputs("{\n", pOutFile);
 	for(size_t m = 0; m < fdlist.size(); m++)
 	{
-             fputs(strTab.c_str(), pOutFile);
-             fputs(strTab.c_str(), pOutFile);
+            fputs(strTab.c_str(), pOutFile);
+            fputs(strTab.c_str(), pOutFile);
 		    PacketField fd =fdlist.at(m);
 		    if(fd.fieldName.find("[") == std::string::npos)
 		    {
                 std::map<std::string, std::string> ::iterator it = G_TypeFuncMap.find(fd.fieldType);
                 if (it != G_TypeFuncMap.end()) 
                 {
-                    fputs("writer.Write", pOutFile);
-                   fputs(it->second.c_str(), pOutFile);
+					fputs("writer.Write", pOutFile);
+					fputs(it->second.c_str(), pOutFile);
                     fputs("(", pOutFile);
                     fputs(fd.fieldName.c_str(), pOutFile);
                     fputs(");\n", pOutFile);
@@ -265,10 +265,10 @@ bool ProcessWriteMethod(std::vector<PacketField> &fdlist, FILE *pOutFile)
 	return true;
 }
 
-bool ProcessPacket(PacketDef &Packet, FILE *pOutFile)
+bool ProcessPacketCs(PacketDef &Packet, FILE *pOutFile)
 {
-	fputs(Packet.PacketCmt.c_str(), pOutFile);
 	if (Packet.PacketCmt.size() > 0) {
+		fputs(Packet.PacketCmt.c_str(), pOutFile);
 		fputs("\n", pOutFile);
 	}
 	fputs("public class ", pOutFile);
@@ -278,11 +278,11 @@ bool ProcessPacket(PacketDef &Packet, FILE *pOutFile)
 
 	for(size_t m = 0; m < Packet.fieldList.size(); m++)
 	{
-		ProcessFieldDeclare(Packet.fieldList.at(m), pOutFile);
+		ProcessFieldDeclareCs(Packet.fieldList.at(m), pOutFile);
 	}	
 
-	ProcessReadMethod(Packet.fieldList, pOutFile);
-	ProcessWriteMethod(Packet.fieldList, pOutFile);
+	ProcessReadMethodCs(Packet.fieldList, pOutFile);
+	ProcessWriteMethodCs(Packet.fieldList, pOutFile);
 
 	fputs("};\n\n", pOutFile);
 
