@@ -4,7 +4,7 @@
 #include "stdafx.h"
 
 #include "transfer.h"
-
+#include <io.h>
 
 
 std::map<std::string, std::string> G_TypeFuncMap;
@@ -14,67 +14,100 @@ std::string strBlank = " ";
 int _tmain(int argc, _TCHAR* argv[])
 {
     InitTypeFuncMap();
-	//ConvertFileToCsharp("D:\\Heros\\server\\src\\battlesvr\\mainlogic\\battle_msg.h","D:\\Heros\\server\\src\\msg\\battle_msg.cs");
-	//ConvertFileToGo("D:\\Heros\\server\\src\\battlesvr\\mainlogic\\battle_msg.h","D:\\Heros\\server\\src\\msg\\battle_msg.go");
-	//ConvertFileToLua("D:\\Heros\\server\\src\\battlesvr\\mainlogic\\battle_msg.h","C:\\Users\\Administrator\\Desktop\\testlua\\battle_msg.lua");
-	ConvertFileToCpp("D:\\Heros\\server\\src\\battlesvr\\mainlogic\\battle_msg.h","D:\\Heros\\server\\src\\msg\\battle_msg.cpp");
-		/*
-	////以下转换走的配制
-	FILE *pFile = fopen(GetConfigName().c_str(),"r+");
-	if(pFile == NULL)
+	
+	std::string strInDir;
+	std::string strOutDir;
+	std::string strType;
+
+	for(int i = 1; i < argc; i++)
 	{
-		return FALSE;
+		std::string str = argv[i];
+
+		if(str[0] != '-')
+		{
+			continue;
+		}
+
+		if (str[1] == 'i')
+		{
+			strInDir = str.substr(2, str.length() -2);
+		}
+
+		if (str[1] == 'o')
+		{
+			strOutDir = str.substr(2, str.length() -2);
+		}
+
+		if (str[1] == 't')
+		{
+			strType = str.substr(2, str.length() -2);
+		}
 	}
 
-	CHAR szBuff[256] = {0};
-	do
+	if(strOutDir.empty())
 	{
-		fgets(szBuff, 256, pFile);
-		if(szBuff[0] == '#')
+		strOutDir = strInDir;
+	}
+
+	if(strType.empty())
+	{
+		strType = "all";
+	}
+
+	std::string temp = strInDir + "\\*.h";
+	long Handle;
+	struct _finddata_t fileinfo;
+	if((Handle=_findfirst(temp.c_str(),&fileinfo))==-1L)
+	{
+		printf("没有找到匹配的项目\n");
+	}
+	else
+	{
+		do 
 		{
-			continue;
-		}
+			std::string infile = strInDir + "\\" +fileinfo.name;
+			char *pDot = strchr(fileinfo.name,'.');
+			*pDot = 0;
+			std::string outfile = strOutDir + "\\" + fileinfo.name;
 
-		CHAR *pChar = strchr(szBuff,'>');
-		if(pChar == NULL)
-		{
-			continue;
-		}
+			if(strType == "all")
+			{
+				ConvertFileToCsharp(infile.c_str(),(outfile+".cs").c_str());
+				ConvertFileToGo(infile.c_str(),(outfile+".go").c_str());
+				ConvertFileToLua(infile.c_str(),(outfile+".lua").c_str());
+				ConvertFileToCpp(infile.c_str(),(outfile+".cpp").c_str());
+			}
+			else if(strType == "cs")
+			{
+				ConvertFileToCsharp(infile.c_str(),(outfile+".cs").c_str());
+			}
+			else if(strType == "go")
+			{
+				ConvertFileToGo(infile.c_str(),(outfile+".go").c_str());
+			}
+			else if(strType == "cpp")
+			{
+				ConvertFileToCpp(infile.c_str(),(outfile+".cpp").c_str());
+			}
+			else if(strType == "lua")
+			{
+				ConvertFileToLua(infile.c_str(),(outfile+".lua").c_str());
+			}
 
-		std::string strSrcFile;
-		strSrcFile.assign(szBuff,pChar-szBuff);
-		std::string strDestFile = pChar+1;
-		strDestFile = strDestFile.substr(0,strDestFile.find_last_not_of(" \n\r\t")+1); 
-		const char *ext=strrchr(strDestFile.c_str(),'.');
-		if (strcmp(ext+1, "cs") == 0)
-		{
-				ConvertFileToCsharp(strSrcFile.c_str(), strDestFile.c_str());
-		}
+		} while (_findnext(Handle,&fileinfo)==0);
+	
+		_findclose(Handle);
+	}
 
-		if (strcmp(ext+1, "go") == 0)
-		{
-			ConvertFileToGo(strSrcFile.c_str(), strDestFile.c_str());
-		}
-
-
-
-
-	}while(!feof(pFile));
-
-	fclose(pFile);
-
-	*/
+	
 	return 0;
 }
 
-std::string GetConfigName()
-{
-	char szPath[256];
-	_getcwd(szPath, 256);
-	return std::string(szPath)+"\\config.ini";
-}
-
-
+/*
+这里定义是解析流里的方用里到的函数据类
+如ReadInt8, WriteInt8 之类的，和语言所在的类别无关
+只因为帮助类定义的方法就是这样的，统一的。
+*/
 bool InitTypeFuncMap()
 {
 	G_TypeFuncMap["INT8"]="Int8";
@@ -86,8 +119,7 @@ bool InitTypeFuncMap()
     G_TypeFuncMap["UINT32"]="Uint32";
     G_TypeFuncMap["UINT64"]="Uint64";
     G_TypeFuncMap["FLOAT"]="Float";
-	 G_TypeFuncMap["STRING"]="String";
-
+	G_TypeFuncMap["STRING"]="String";
 
     return true;
 }
