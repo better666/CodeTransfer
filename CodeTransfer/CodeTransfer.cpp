@@ -54,12 +54,14 @@ int _tmain(int argc, _TCHAR* argv[])
 		strType = "all";
 	}
 
-	std::string temp = strInDir + "\\*.h";
+	std::string temp = strInDir + "\\*.msg";
 	long Handle;
 	struct _finddata_t fileinfo;
 	if((Handle=_findfirst(temp.c_str(),&fileinfo))==-1L)
 	{
-		printf("没有找到匹配的项目\n");
+		printf("cannot find input file in %s\n", strInDir);
+		printf("example:\n", strInDir);
+		printf("-iindir -ooutdir -ttype\n", strInDir);
 	}
 	else
 	{
@@ -75,7 +77,7 @@ int _tmain(int argc, _TCHAR* argv[])
 				ConvertFileToCsharp(infile.c_str(),(outfile+".cs").c_str());
 				ConvertFileToGo(infile.c_str(),(outfile+".go").c_str());
 				ConvertFileToLua(infile.c_str(),(outfile+".lua").c_str());
-				ConvertFileToCpp(infile.c_str(),(outfile+".cpp").c_str());
+				ConvertFileToCpp(infile.c_str(),(outfile+".h").c_str());
 			}
 			else if(strType == "cs")
 			{
